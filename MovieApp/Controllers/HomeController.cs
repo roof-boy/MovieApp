@@ -23,10 +23,20 @@ namespace MovieApp.Controllers
             return View(allMovies);
         }
 
-        //[Authorize(Roles = "StoreManager")]
-        public IActionResult CreateMovie()
+        [Authorize(Roles = "StoreManager")]
+        public IActionResult CreateEditMovie(int? id)
         {
-            return View(new Movie());
+            var movie = id != null
+                ? _context.Movies.FirstOrDefault(movie => movie.Id == id)
+                : new Movie();
+
+            return View(movie);
+        }
+
+        public IActionResult ManagerOverview()
+        {
+            var allMovies = _context.Movies.ToList();
+            return View(allMovies);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

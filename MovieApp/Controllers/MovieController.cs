@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MovieApp.Data;
 using MovieApp.Models;
 
@@ -16,14 +17,33 @@ namespace MovieApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateMovieForm(Movie movie)
+        public IActionResult CreateMovieForm(Movie movie, int? id)
         {
-
-            // Save the movie to the database (example, not implemented)
-             _context.Movies.Add(movie);
+            if (movie.Id == 0)
+            {
+                _context.Movies.Add(movie);
+            } else
+            {
+                _context.Movies.Update(movie);
+            }
+             
              _context.SaveChanges();
 
-            return RedirectToAction("Index"); // Redirect to a list or detail page
+            return RedirectToAction("Index",  new { controller = "Home" }); // Redirect to a list or detail page
+        }
+
+        public IActionResult DeleteMovie(int id)
+        {
+            var movieInDb = _context.Movies.SingleOrDefault(movie => movie.Id == id);
+            if (movieInDb == null)
+            {
+                return NotFound();
+            }
+
+            _context.Movies.Remove(movieInDb);
+            _context.SaveChanges();
+
+            return RedirectToAction("ManagerOverview", new { controller = "Home" });
         }
     }
 }
