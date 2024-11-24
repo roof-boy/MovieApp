@@ -8,6 +8,9 @@
 
 @if (isAdmin) {
 	<li class="nav-item">
-		<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="CreateMovie">Add Movie</a>
+		<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="CreateEditMovie">Add Movie</a>
 	</li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ManagerOverview">Overview Table</a>
+    </li>
 }
