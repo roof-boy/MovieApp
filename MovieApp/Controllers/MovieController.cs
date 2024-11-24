@@ -16,14 +16,14 @@ namespace MovieApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateMovieForm(Movie movie)
+        public IActionResult CreateEditMovieForm(Movie movie)
         {
 
             // Save the movie to the database (example, not implemented)
              _context.Movies.Add(movie);
              _context.SaveChanges();
 
-            return RedirectToAction("Index"); // Redirect to a list or detail page
+            return RedirectToAction("/Home/Index"); // Redirect to a list or detail page
         }
     }
 }
