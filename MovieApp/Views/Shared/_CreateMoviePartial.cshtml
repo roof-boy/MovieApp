@@ -1,13 +1,23 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject UserManager<IdentityUser> UserManager
 @inject RoleManager<IdentityRole> RoleManager
+@inject SignInManager<IdentityUser> SignInManager
 
 @{
-	var isAdmin = await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "StoreManager");
+	bool isAdmin = false;
+
+    if (SignInManager.IsSignedIn(User))
+    {
+        var currentUser = await UserManager.GetUserAsync(User);
+        if (currentUser != null)
+        {
+            isAdmin = await UserManager.IsInRoleAsync(currentUser, "StoreManager");
+        }
+    }
 }
 
 @if (isAdmin) {
 	<li class="nav-item">
-		<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="CreateMovie">Add Movie</a>
+		<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="CreateEditMovie">Add Movie</a>
 	</li>
 }
