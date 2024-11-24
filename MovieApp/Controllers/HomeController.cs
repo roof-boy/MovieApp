@@ -6,7 +6,7 @@ using MovieApp.Models;
 
 namespace MovieApp.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController :Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
@@ -23,8 +23,8 @@ namespace MovieApp.Controllers
             return View(allMovies);
         }
 
-        //[Authorize(Roles = "StoreManager")]
-        public IActionResult CreateMovie()
+        [Authorize(Roles = "StoreManager")]
+        public IActionResult CreateEditMovie()
         {
             return View(new Movie());
         }
