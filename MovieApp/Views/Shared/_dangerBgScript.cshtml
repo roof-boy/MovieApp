@@ -1,0 +1,12 @@
+﻿<script>
+	const dangerBgButtons = document.querySelectorAll('[id="deleteDanger"]');
+
+	dangerBgButtons.forEach((dangerButton, index) => {
+		dangerButton.addEventListener("mouseenter", event => {
+			dangerButton.classList.add("text-bg-danger");
+		});
+		dangerButton.addEventListener("mouseleave", event => {
+			dangerButton.classList.remove("text-bg-danger");
+		});
+	});
+</script>

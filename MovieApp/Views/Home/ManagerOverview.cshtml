@@ -1,0 +1,41 @@
+﻿@{
+}
+@model List<MovieApp.Models.Movie>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <td class="w-auto">Id</td>
+            <td class="w-auto">Movie Name</td>
+            <td class="w-auto">Price</td>
+            <td class="w-auto">Thumbnail URL</td>
+			<td class="w-auto">Actions</td>
+        </tr>
+    </thead>
+    <tbody class="align-middle">
+        @{
+            foreach (var movie in Model)
+            {
+                <tr>
+                    <td>@movie.Id</td>
+                    <td>@movie.Name</td>
+                    <td class="text-center">$@movie.Price</td>
+                    <td><a href="@movie.ThumbUrl" target="_blank">@movie.ThumbUrl</a></td>
+                    <td>
+                        <div class="dropdown-center">
+                            <button class="btn btn-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Actions
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-action="CreateEditMovie" asp-route-id="@movie.Id">Edit</a></li>
+                                <li><a class="dropdown-item" id="deleteDanger" asp-controller="Movie" asp-action="DeleteMovie" asp-route-id="@movie.Id">Delete</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<partial name="_dangerBgScript" />
