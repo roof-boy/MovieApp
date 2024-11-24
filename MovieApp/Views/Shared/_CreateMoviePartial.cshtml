@@ -1,0 +1,13 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@inject RoleManager<IdentityRole> RoleManager
+
+@{
+	var isAdmin = await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "StoreManager");
+}
+
+@if (isAdmin) {
+	<li class="nav-item">
+		<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="CreateMovie">Add Movie</a>
+	</li>
+}

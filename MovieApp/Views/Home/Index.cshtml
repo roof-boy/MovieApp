@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model List<MovieApp.Models.Movie>
+
+<div class="container">
+    @for (int i = 0; i < Model.Count; i += 3)
+    {
+        <div class="row mb-4">
+            @for (int j = i; j < i + 3 && j < Model.Count; j++)
+            {
+                var movie = Model[j];
+                <div class="col-md-4 d-flex">
+                    <div class="mw-100 w-50 h-auto shadow rounded-1 p-2" id="buyBox-@j">
+                        <img class="mw-100 rounded-1" src="@movie.ThumbUrl" alt="@movie.Name" />
+                        <h4 class="mt-2">@movie.Name</h4>
+                        <h5 class="mt-2">$@movie.Price</h5>
+                        <button class="btn btn-primary w-100 d-none">Buy</button>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+
+<partial name="_BuyScriptsPartial" />
