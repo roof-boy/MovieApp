@@ -17,7 +17,17 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddTransient<SeedingScripts>();
+
 var app = builder.Build();
+
+// Seed default admin user and default roles
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var seeder = services.GetRequiredService<SeedingScripts>();
+    await seeder.SeedRolesAndUsersAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -40,8 +50,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "movie",
-    pattern: "{controller=Movie}/{action}/{id?}",
-    defaults: new {controller = "MovieController"})
+    pattern: "{controller=Movie}/{action}/{id?}")
     .WithStaticAssets();
 
 app.MapControllerRoute(
