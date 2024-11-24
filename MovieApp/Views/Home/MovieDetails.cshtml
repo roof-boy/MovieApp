@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@inject RoleManager<IdentityRole> RoleManager
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
+	bool isAdmin = false;
+
+	if (SignInManager.IsSignedIn(User))
+	{
+		var currentUser = await UserManager.GetUserAsync(User);
+		if (currentUser != null)
+		{
+			isAdmin = await UserManager.IsInRoleAsync(currentUser, "StoreManager");
+		}
+	}
+}
+
+@model MovieApp.Models.Movie
+
+<div class="row">
+	<div class="col-sm-3">
+		<img class="rounded-2 img-fluid" src="@Model.ThumbUrl" alt="@Model.Name" />
+	</div>
+	<div class="col-md-9">
+		<h1>@Model.Name ($@Model.Price)</h1>
+		<hr />
+		<button class="btn btn-primary w-25 me-1">Buy</button>
+		@if (isAdmin)
+		{
+			<a class="btn btn-outline-secondary w-25" asp-action="CreateEditMovie" asp-route-id="@Model.Id">Edit</a>
+		}
+		<br />
+		<h5 class="mt-4 mb-1">Description:</h5>
+		<p>Nil</p>
+		<br />
+		<h5>Tags:</h5>
+		<span class="badge text-bg-secondary text-lg-start" style="font-size: medium;">Test</span>
+		<span class="badge text-bg-secondary" style="font-size: medium;">Test</span>
+		<span class="badge text-bg-secondary" style="font-size: medium;">Test</span>
+	</div>
+</div>

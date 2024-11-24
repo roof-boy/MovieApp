@@ -39,6 +39,17 @@ namespace MovieApp.Controllers
             return View(allMovies);
         }
 
+        public IActionResult MovieDetails(int id)
+        {
+            var movie = _context.Movies.SingleOrDefault(mov => mov.Id == id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            return View(movie);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
