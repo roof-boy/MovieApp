@@ -17,6 +17,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddHttpClient();
+
 builder.Services.AddTransient<SeedingScripts>();
 
 var app = builder.Build();

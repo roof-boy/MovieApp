@@ -11,15 +11,16 @@ namespace MovieApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<MovieController> _Movielogger;
         private readonly ApplicationDbContext _context;
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, HttpClient httpClient, IConfiguration configuration)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IHttpClientFactory httpClient, IConfiguration configuration)
         {
             _logger = logger;
             _context = context;
-            _httpClient = httpClient;
+            _httpClientFactory = httpClient;
             _configuration = configuration;
         }
 
@@ -47,13 +48,25 @@ namespace MovieApp.Controllers
 
         public IActionResult MovieDetails(int id, string name)
         {
+            var movieController = new MovieController(_Movielogger, _context, _httpClientFactory, _configuration);
+
+            var movieData = movieController.GetMovieData(name).Result;
+
             var movie = _context.Movies.SingleOrDefault(mov => mov.Id == id);
             if (movie == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            var viewModel = new MovieDetailsViewModel
+            {
+                Movie = movie,
+                MovieAPI = movieData
+            };
+
+            
+
+            return View(viewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

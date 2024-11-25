@@ -11,6 +11,8 @@ namespace MovieApp.Models
 
         [Required]
         public decimal Price { get; set; }
+
+        [Required]
         public string ThumbUrl { get; set; }
     }
 }

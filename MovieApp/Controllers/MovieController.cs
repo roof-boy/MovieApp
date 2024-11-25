@@ -10,19 +10,18 @@ namespace MovieApp.Controllers
     {
         private readonly ILogger<MovieController> _logger;
         private readonly ApplicationDbContext _context;
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
 
-        public MovieController(ILogger<MovieController> logger, ApplicationDbContext context, HttpClient httpClient, IConfiguration configuration)
+        public MovieController(ILogger<MovieController> logger, ApplicationDbContext context, IHttpClientFactory httpClient, IConfiguration configuration)
         {
             _logger = logger;
             _context = context;
-            _httpClient = httpClient;
+            _httpClientFactory = httpClient;
             _configuration = configuration;
         }
 
-        [HttpPost]
-        public IActionResult CreateMovieForm(Movie movie, int? id)
+        public IActionResult CreateEditMovieForm(Movie movie, int? id)
         {
             if (movie.Id == 0)
             {
@@ -54,18 +53,26 @@ namespace MovieApp.Controllers
         public async Task<MovieAPI> GetMovieData(string name)
         {
             string apiKey = _configuration.GetValue<string>("ApiKey");
-            string url = $"https://www.omdbapi.com/?apikey={apiKey}&t={name}";
+            string url = $"https://www.omdbapi.com/?apikey={apiKey}&t={name}&plot=full";
 
-            HttpResponseMessage response = await _httpClient.GetAsync(url);
+            var httpClient = _httpClientFactory.CreateClient();
+
+            HttpResponseMessage response = await httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
+
+            
 
             string jsonResponse = await response.Content.ReadAsStringAsync();
 
             var jsonDocument = JsonDocument.Parse(jsonResponse);
-            var movieData = jsonDocument.RootElement
-                .GetProperty("results")
-                .EnumerateArray()
-                .FirstOrDefault(); // Assume we take the first result
+
+            Console.WriteLine(jsonDocument);
+
+            var movieData = jsonDocument.RootElement; // Assume we take the first result
+
+            var genreRaw = movieData.GetProperty("Genre").GetString();
+
+            string[] genreProcessed = genreRaw.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToArray();
 
             if (movieData.ValueKind == JsonValueKind.Undefined)
             {
@@ -74,9 +81,9 @@ namespace MovieApp.Controllers
 
             return new MovieAPI
             {
-                Title = movieData.GetProperty("title").GetString(),
-                Plot = movieData.GetProperty("plot").GetString(),
-                Genre = movieData.GetProperty("Genre").GetString()
+                Title = movieData.GetProperty("Title").GetString(),
+                Plot = movieData.GetProperty("Plot").GetString(),
+                Genre = genreProcessed,
             };
         }
     }
