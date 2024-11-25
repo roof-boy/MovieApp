@@ -25,6 +25,9 @@ namespace MovieApp.Controllers
         {
             if (movie.Id == 0)
             {
+                var ThumbURL = GetMovieData(movie.Name);
+                movie.ThumbUrl = ThumbURL.Result.ThumbUrl;
+
                 _context.Movies.Add(movie);
             } else
             {
@@ -84,6 +87,7 @@ namespace MovieApp.Controllers
                 Title = movieData.GetProperty("Title").GetString(),
                 Plot = movieData.GetProperty("Plot").GetString(),
                 Genre = genreProcessed,
+                ThumbUrl = movieData.GetProperty("Poster").GetString(),
             };
         }
     }
