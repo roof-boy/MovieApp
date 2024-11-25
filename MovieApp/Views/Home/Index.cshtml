@@ -14,7 +14,7 @@
                 <div class="col-md-4 d-flex justify-content-center mb-4">
                     <div class="mw-100 w-75 h-auto shadow rounded-1 p-2" id="buyBox-@j">
                         <img class="mw-100 rounded-1" src="@movie.ThumbUrl" alt="@movie.Name" />
-                        <h4 class="mt-2"><a class="text-decoration-none text-black" asp-action="#">@movie.Name</a></h4>
+                        <h4 class="mt-2"><a class="text-decoration-none text-black" asp-action="MovieDetails" asp-route-id="@movie.Id" asp-route-name="@movie.Name">@movie.Name</a></h4>
                         <h5 class="mt-2">$@movie.Price</h5>
                         <button class="btn btn-primary w-100 d-none">Buy</button>
                     </div>
