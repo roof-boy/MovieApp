@@ -8,6 +8,8 @@ namespace MovieApp.Data
     {
         public DbSet<Movie> Movies { get; set; }
 
+        public DbSet<MovieAPI> MoviesAPI { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

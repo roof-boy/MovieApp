@@ -50,10 +50,14 @@ namespace MovieApp.Controllers
         {
             var movieController = new MovieController(_Movielogger, _context, _httpClientFactory, _configuration);
 
-            var movieData = movieController.GetMovieData(name).Result;
-
             var movie = _context.Movies.SingleOrDefault(mov => mov.Id == id);
             if (movie == null)
+            {
+                return NotFound();
+            }
+
+            var movieData = _context.MoviesAPI.SingleOrDefault(mov => mov.Title == name);
+            if (movieData == null)
             {
                 return NotFound();
             }

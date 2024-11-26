@@ -25,8 +25,10 @@ namespace MovieApp.Controllers
         {
             if (movie.Id == 0)
             {
-                var ThumbURL = GetMovieData(movie.Name);
-                movie.ThumbUrl = ThumbURL.Result.ThumbUrl;
+                var movieData = GetMovieData(movie.Name);
+                movie.ThumbUrl = movieData.Result.ThumbUrl;
+
+                _context.MoviesAPI.Add(movieData.Result);
 
                 _context.Movies.Add(movie);
             } else
@@ -69,7 +71,6 @@ namespace MovieApp.Controllers
 
             var jsonDocument = JsonDocument.Parse(jsonResponse);
 
-            Console.WriteLine(jsonDocument);
 
             var movieData = jsonDocument.RootElement; // Assume we take the first result
 
