@@ -4,18 +4,24 @@
 @inject SignInManager<IdentityUser> SignInManager
 
 @{
+
+    // Create a bool variable for use below.
 	bool isAdmin = false;
 
+    // See if a user is even logged in before proceeding
     if (SignInManager.IsSignedIn(User))
     {
+        // If the user is logged in, get the specific user.
         var currentUser = await UserManager.GetUserAsync(User);
         if (currentUser != null)
         {
+            // Check if the logged in user possesses the role "StoreManager"
             isAdmin = await UserManager.IsInRoleAsync(currentUser, "StoreManager");
         }
     }
 }
 
+@* If they are an admin, add the option to go to these pages. *@;
 @if (isAdmin) {
 	<li class="nav-item">
 		<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="CreateEditMovie">Add Movie</a>
