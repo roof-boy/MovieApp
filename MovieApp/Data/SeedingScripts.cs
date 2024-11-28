@@ -15,9 +15,10 @@ namespace MovieApp.Data
             _userManager = userManager;
         }
 
+        // To be used when a new database is created. Passes initial roles and users required for the app to function properly.
         public async Task SeedRolesAndUsersAsync()
         {
-
+            // SET ROLES HERE
             string[] roles = { "Customer", "StoreManager" };
 
             // SEED ROLES
